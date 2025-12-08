@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO 描述 -->
+    <title>C% | Visuals & Color</title>
+    <meta name="description" content="Portfolio of Chen Yi - Photographer, Colorist, DIT">
+
+    <!-- =========================================
+         资源引入 (Google Fonts & Tailwind)
+         ========================================= -->
+    <!-- 引入 Google Fonts (保留 Inter 用于数字和正文英文，移除 Oswald) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#121212',
+                        accent: '#e50914',
+                        neonBlue: '#00f3ff',
+                        neonPink: '#ff00ff',
+                        neonGold: '#ffd700',
+                        text: '#f3f3f3',
+                        muted: '#888888'
+                    },
+                    fontFamily: {
+                        sans: ['"PingFang SC"', '"Microsoft YaHei"', 'Inter', 'sans-serif'],
+                        display: ['"PingFang SC"', '"Microsoft YaHei"', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon-blue': '0 0 10px rgba(0, 243, 255, 0.7), 0 0 20px rgba(0, 243, 255, 0.5)',
+                        'neon-pink': '0 0 10px rgba(255, 0, 255, 0.7), 0 0 20px rgba(255, 0, 255, 0.5)',
+                        'neon-gold': '0 0 10px rgba(255, 215, 0, 0.7), 0 0 20px rgba(255, 215, 0, 0.5)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #121212;
+            color: #f3f3f3;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            background: #121212;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+            backdrop-filter: blur(0px);
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-progress {
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .portfolio-item {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .portfolio-item img {
+            transition: transform 0.6s ease;
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(1) contrast(1);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .logo-text {
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* [新增样式] 履历时间轴背景过渡 */
+        .timeline-bg {
+            opacity: 0;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity;
+        }
+
+        .timeline-bg.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-neonBlue selection:text-black">
+
+    <!-- [NAV] 导航栏 (保持不变) -->
+    <nav
+        class="fixed top-0 w-full z-50 px-6 py-3 flex justify-between items-center backdrop-blur-md bg-[#121212]/60 border-b border-white/5 transition-all duration-300">
+        <div class="flex items-center gap-6">
+            <button id="nav-toggle-btn" class="text-white hover:text-gray-300 focus:outline-none group"
+                aria-label="Toggle Menu">
+                <svg class="w-6 h-6 transform group-hover:scale-110 transition-transform" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 12h16M4 16h16">
+                    </path>
+                </svg>
+            </button>
+            <a href="#"
+                class="text-3xl font-display font-bold tracking-tighter hover:text-gray-300 transition-colors logo-text">
+                C%
+            </a>
+        </div>
+        <div class="hidden md:flex space-x-8 font-sans text-sm tracking-widest uppercase text-gray-300">
+            <a href="#showreel" class="hover:text-neonBlue transition-colors">Showreel</a>
+            <a href="#profile" class="hover:text-neonBlue transition-colors">Profile</a>
+            <a href="#experience" class="hover:text-neonBlue transition-colors">Experience</a>
+            <a href="#portfolio" class="hover:text-neonBlue transition-colors">Portfolio</a>
+            <a href="#contact" class="hover:text-neonBlue transition-colors">Contact</a>
+        </div>
+    </nav>
+
+    <!-- [NAV] 移动端菜单 (保持不变) -->
+    <div id="mobile-menu"
+        class="fixed inset-0 bg-[#121212] z-40 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center space-y-8 text-2xl font-display uppercase tracking-widest">
+        <button id="close-menu-btn"
+            class="absolute top-6 right-6 text-white p-2 hover:rotate-90 transition-transform duration-300"
+            aria-label="Close Menu">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <a href="#showreel" class="mobile-link text-neonBlue hover:scale-110 transition-transform">Showreel</a>
+        <a href="#profile" class="mobile-link hover:scale-110 transition-transform">Profile</a>
+        <a href="#experience" class="mobile-link hover:scale-110 transition-transform">Experience</a>
+        <a href="#portfolio" class="mobile-link hover:scale-110 transition-transform">Portfolio</a>
+        <a href="#contact" class="mobile-link hover:scale-110 transition-transform">Contact</a>
+    </div>
+
+    <!-- [HEADER] Hero Section (保持不变) -->
+    <header class="relative w-full h-screen min-h-[800px] flex items-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="images/hero2.jpg"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2071&auto=format&fit=crop';"
+                alt="Cinematic Hero Background" class="w-full h-full object-cover">
+        </div>
+        <div class="hero-overlay absolute inset-0 z-10"></div>
+        <div class="relative z-20 container mx-auto px-4 h-full flex items-center">
+            <div class="fade-up max-w-2xl pl-4 md:pl-13">
+                <h2
+                    class="text-gray-300 text-xs font-bold tracking-[0.3em] mb-6 uppercase border-l-2 border-neonBlue pl-4">
+                    Photographer / Colorist / DIT
+                </h2>
+                <a href="#profile" class="group block">
+                    <h1
+                        class="font-display text-6xl md:text-8xl font-bold leading-none text-white group-hover:text-neonBlue transition-colors duration-500">
+                        VIEW <br>
+                        CLAIRE'S <br>
+                        WORKS
+                    </h1>
+                    <div
+                        class="h-1 w-24 bg-white mt-8 group-hover:w-full group-hover:bg-neonBlue transition-all duration-700 ease-in-out">
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+            <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3">
+                </path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- [SECTION 2] Profile (保持不变) -->
+    <section id="profile" class="py-24 bg-[#121212] relative">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div class="fade-up order-2 md:order-1 flex justify-center md:justify-start">
+                <div
+                    class="relative w-full max-w-md h-[600px] bg-gray-800 overflow-hidden shadow-2xl border border-gray-800 group">
+                    <img src="images/profile1.jpg"
+                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1554048612-387768052bf7?q=80&w=1935&auto=format&fit=crop';"
+                        alt="Chen Yi Portrait"
+                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                    <div class="absolute bottom-4 left-4 text-[10px] font-mono text-neonBlue opacity-80">
+                        MASTER OF FINE ARTS <br> SHANGHAI THEATRE ACADEMY
+                    </div>
+                </div>
+            </div>
+            <div class="fade-up order-1 md:order-2">
+                <h2 class="font-display text-6xl font-bold text-gray-800 mb-8 select-none">陈伊 Claire</h2>
+                <h3 class="text-3xl font-display font-bold mb-6 text-white leading-tight">
+                    VISUAL CONTROL <br>
+                    <span class="text-neonBlue text-xl tracking-widest font-sans">COLOR SCIENCE & ART</span>
+                </h3>
+                <div class="p-8 border-l-2 border-neonBlue bg-gray-900/30 mb-8 backdrop-blur-sm">
+                    <p class="text-gray-300 leading-relaxed font-sans text-lg mb-4">
+                        从<strong class="text-white">《流浪地球3》</strong>的硬核现场到调色台的细腻重塑。
+                    </p>
+                    <p class="text-gray-400 leading-relaxed font-sans text-base">
+                        陈伊<strong class="text-white">影视摄制专业</strong>的上戏电影硕士。我既能和 ARRI / RED “称兄道弟”，也能把 Davinci Resolve
+                        盘出包浆。左手是严谨的色彩科学，右手是感性的光影艺术。我不只是调色师，更是你片场最靠谱的<strong
+                            class="text-neonBlue">“像素保镖”</strong>。致力用最硬核的技术流，搞定最细腻的电影感。
+                    </p>
+                </div>
+                <div class="space-y-6 mt-8">
+                    <div class="skill-group">
+                        <div class="flex justify-between mb-2 font-mono text-xs text-neonGold"><span>CAMERA DEPT：ARRI /
+                                Red / Sony / 数字灯光控台</span><span>100%</span></div>
+                        <div class="h-1 bg-gray-800">
+                            <div class="skill-progress h-full bg-neonGold shadow-neon-gold" data-width="100%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <div class="flex justify-between mb-2 font-mono text-xs text-neonBlue"><span>DIT &
+                                WORKFLOW：Livegrade / Qtake / Silverstack / Reeltime</span><span>95%</span></div>
+                        <div class="h-1 bg-gray-800">
+                            <div class="skill-progress h-full bg-neonBlue shadow-neon-blue" data-width="95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <div class="flex justify-between mb-2 font-mono text-xs text-neonPink"><span>COLOR
+                                GRADING：Davinci / Baselight</span><span>90%</span></div>
+                        <div class="h-1 bg-gray-800">
+                            <div class="skill-progress h-full bg-neonPink shadow-neon-pink" data-width="90%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [SECTION] Showreel (保持不变) -->
+    <section id="showreel" class="py-24 bg-[#0e0e0e] border-t border-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="flex items-end justify-between mb-12 fade-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold uppercase">Showreel <span
+                        class="text-neonPink">2025</span></h2>
+                <span class="hidden md:block font-mono text-xs text-gray-500">DIT / GRADING / CINEMATOGRAPHY</span>
+            </div>
+            <div class="video-container bg-black shadow-2xl fade-up delay-100 border border-gray-800">
+                <iframe
+                    src="https://player.bilibili.com/player.html?isOutside=true&aid=115655013572170&bvid=BV17V24BHEu3&cid=34474101646&p=1"
+                    scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================
+         [NEW SECTION] 苹果风格沉浸式履历时间轴
+         Sticky Background + Scrolling Text
+         ========================================= -->
+    <section id="experience" class="relative bg-black w-full">
+        <!-- 1. 粘性背景层 (容器高度由内容层决定，但此处始终固定在视口) -->
+        <div class="sticky top-0 w-full h-screen overflow-hidden z-0">
+            <!-- 
+                [修改] 动态遮罩 
+                初始状态：opacity-0 (透明)，通过JS控制添加 active 类变为 opacity-100
+                transition-opacity duration-1000 实现1秒的丝滑渐变
+            -->
+            <div id="timeline-overlay"
+                class="absolute inset-0 bg-black/70 z-10 pointer-events-none opacity-0 transition-opacity duration-1000">
+            </div>
+
+            <!-- 背景图片组 -->
+            <img id="bg-1" src="images/exp1.jpg"
+                onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop'"
+                class="timeline-bg active absolute inset-0 w-full h-full object-cover" alt="Background 1">
+            <img id="bg-2" src="images/exp2.jpg"
+                onerror="this.src='https://images.unsplash.com/photo-1542204637-e67bc7d41e48?q=80&w=2535&auto=format&fit=crop'"
+                class="timeline-bg absolute inset-0 w-full h-full object-cover" alt="Background 2">
+            <img id="bg-3" src="images/exp3.jpg"
+                onerror="this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=2538&auto=format&fit=crop'"
+                class="timeline-bg absolute inset-0 w-full h-full object-cover" alt="Background 3">
+            <img id="bg-4" src="images/exp4.jpg"
+                onerror="this.src='https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2071&auto=format&fit=crop'"
+                class="timeline-bg absolute inset-0 w-full h-full object-cover" alt="Background 4">
+            <img id="bg-5" src="images/exp5.jpg"
+                onerror="this.src='https://images.unsplash.com/photo-1518929458119-e5bf444c30f4?q=80&w=2574&auto=format&fit=crop'"
+                class="timeline-bg absolute inset-0 w-full h-full object-cover" alt="Background 5">
+            <img id="bg-6" src="images/exp6.jpg"
+                onerror="this.src='https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2659&auto=format&fit=crop'"
+                class="timeline-bg absolute inset-0 w-full h-full object-cover" alt="Background 6">
+        </div>
+
+        <!-- 2. 滚动内容层 -->
+        <div class="relative z-20 -mt-[100vh]">
+
+            <!-- 
+                [新增] 空白占位层 (Spacer)
+                data-bg="bg-1" 保持第一张背景图
+                data-hide-overlay="true" 告诉JS在这里隐藏遮罩
+            -->
+            <div class="h-screen w-full" data-bg="bg-1" data-hide-overlay="true"></div>
+
+            <!-- Item 1: 流浪地球 3 (现在文字出现时，遮罩也会随之出现) -->
+            <div class="min-h-screen flex items-center justify-center px-6 py-20" data-bg="bg-1">
+                <div
+                    class="text-center max-w-4xl backdrop-blur-md bg-black/40 p-8 md:p-12 border border-white/10 rounded-sm">
+                    <span class="block text-neonBlue font-mono text-lg md:text-xl mb-4 tracking-widest">2025.04 -
+                        PRESENT</span>
+                    <h3 class="text-5xl md:text-7xl font-display font-bold text-white mb-6">流浪地球 3</h3>
+                    <p class="text-xl md:text-2xl text-gray-200 font-light mb-2">The Wandering Earth 3</p>
+                    <div class="w-12 h-1 bg-neonBlue mx-auto my-6"></div>
+                    <p class="text-lg md:text-xl text-gray-300 font-bold tracking-wide uppercase">DIT / 现场调色</p>
+                </div>
+            </div>
+
+            <!-- Item 2: 菜肉馄饨 -->
+            <div class="min-h-screen flex items-center justify-center px-6 py-20" data-bg="bg-2">
+                <div
+                    class="text-center max-w-4xl backdrop-blur-md bg-black/40 p-8 md:p-12 border border-white/10 rounded-sm">
+                    <span class="block text-neonGold font-mono text-lg md:text-xl mb-4 tracking-widest">2024.12 -
+                        2025.01</span>
+                    <h3 class="text-5xl md:text-7xl font-display font-bold text-white mb-6">菜肉馄饨</h3>
+                    <p class="text-xl md:text-2xl text-gray-200 font-light mb-2">Shanghai Wonton</p>
+                    <div class="w-12 h-1 bg-neonGold mx-auto my-6"></div>
+                    <p class="text-lg md:text-xl text-gray-300 font-bold tracking-wide uppercase">花絮摄影 / 剪辑</p>
+                </div>
+            </div>
+
+            <!-- Item 3: 望道 -->
+            <div class="min-h-screen flex items-center justify-center px-6 py-20" data-bg="bg-3">
+                <div
+                    class="text-center max-w-4xl backdrop-blur-md bg-black/40 p-8 md:p-12 border border-white/10 rounded-sm">
+                    <span class="block text-gray-400 font-mono text-lg md:text-xl mb-4 tracking-widest">2021.04 -
+                        2021.06</span>
+                    <h3 class="text-5xl md:text-7xl font-display font-bold text-white mb-6">望道</h3>
+                    <p class="text-xl md:text-2xl text-gray-200 font-light mb-2">Manifesto</p>
+                    <div class="w-12 h-1 bg-gray-500 mx-auto my-6"></div>
+                    <p class="text-lg md:text-xl text-gray-300 font-bold tracking-wide uppercase">视觉预演</p>
+                </div>
+            </div>
+
+            <!-- Item 4: 短片/纪录片集合 (动态列表) -->
+            <div class="min-h-screen flex items-center justify-center px-4 py-20" data-bg="bg-4">
+                <div
+                    class="text-left max-w-5xl w-full backdrop-blur-md bg-black/60 p-6 md:p-12 border border-white/10 rounded-sm">
+                    <div class="text-center mb-10">
+                        <span class="block text-neonPink font-mono text-lg mb-2 tracking-widest">SELECTED WORKS</span>
+                        <h3 class="text-4xl md:text-5xl font-display font-bold text-white">短片与纪录片作品</h3>
+                        <p class="text-gray-400 mt-2 text-sm md:text-base">摄影 / 剪辑 / 调色</p>
+                    </div>
+
+                    <!-- 内部微型时间轴 -->
+                    <div class="space-y-8 border-l border-white/20 pl-6 md:pl-10 ml-2 md:ml-6">
+
+                        <!-- 2023 海马宝宝 -->
+                        <div class="relative group">
+                            <span
+                                class="absolute -left-[31px] md:-left-[47px] top-1 w-3 h-3 bg-neonPink rounded-full ring-4 ring-black"></span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-2 mb-1">
+                                <span class="text-neonPink font-mono font-bold text-xl">2023</span>
+                                <h4 class="text-2xl font-bold text-white">海马宝宝</h4>
+                                <span
+                                    class="text-xs border border-white/30 px-2 py-0.5 rounded text-gray-300">摄影/剪辑/调色</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed">入围北京大学生原创电影节</p>
+                        </div>
+
+                        <!-- 2022-2023 纪录片 -->
+                        <div class="relative group">
+                            <span
+                                class="absolute -left-[31px] md:-left-[47px] top-1 w-3 h-3 bg-gray-500 rounded-full ring-4 ring-black group-hover:bg-white transition-colors"></span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-2 mb-1">
+                                <span class="text-white font-mono font-bold text-xl">2022-23</span>
+                                <h4 class="text-2xl font-bold text-white">就，因为她喜欢</h4>
+                                <span
+                                    class="text-xs border border-white/30 px-2 py-0.5 rounded text-gray-300">摄影/剪辑</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed">四集纪录片 / 上线 Bilibili</p>
+                        </div>
+
+                        <!-- 2022 孤燕南飞 -->
+                        <div class="relative group">
+                            <span
+                                class="absolute -left-[31px] md:-left-[47px] top-1 w-3 h-3 bg-gray-500 rounded-full ring-4 ring-black group-hover:bg-white transition-colors"></span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-2 mb-1">
+                                <span class="text-white font-mono font-bold text-xl">2022</span>
+                                <h4 class="text-2xl font-bold text-white">孤燕南飞</h4>
+                                <span
+                                    class="text-xs border border-white/30 px-2 py-0.5 rounded text-gray-300">摄影/调色</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed">2022 MUST 澳门华语青年短片大赛最佳编剧奖获奖作品 / 亚洲大学生电影节 /
+                                克莱蒙国际短片展映</p>
+                        </div>
+
+                        <!-- 2022 父辈的肩膀 -->
+                        <div class="relative group">
+                            <span
+                                class="absolute -left-[31px] md:-left-[47px] top-1 w-3 h-3 bg-gray-500 rounded-full ring-4 ring-black group-hover:bg-white transition-colors"></span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-2 mb-1">
+                                <span class="text-white font-mono font-bold text-xl">2022</span>
+                                <h4 class="text-2xl font-bold text-white">父辈的肩膀</h4>
+                                <span
+                                    class="text-xs border border-white/30 px-2 py-0.5 rounded text-gray-300">摄影助理/调色</span>
+                            </div>
+                            <p
+                                class="text-sm text-gray-400 leading-relaxed line-clamp-3 hover:line-clamp-none transition-all cursor-default">
+                                2023年度优秀行业电视作品展映文艺节目类最佳作品 / 启影大学生电影大赛“最佳导演奖”“最佳作品奖” / 第九届万峰林微电影盛典一等创优奖 / 入围第13届北京国际电影节 /
+                                第30届大学生电影节 / 第12届澳门国际微电影节
+                            </p>
+                        </div>
+
+                        <!-- 2021 沙县什么好吃 -->
+                        <div class="relative group">
+                            <span
+                                class="absolute -left-[31px] md:-left-[47px] top-1 w-3 h-3 bg-neonGold rounded-full ring-4 ring-black"></span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-2 mb-1">
+                                <span class="text-neonGold font-mono font-bold text-xl">2021</span>
+                                <h4 class="text-2xl font-bold text-white">沙县什么好吃</h4>
+                                <span
+                                    class="text-xs border border-white/30 px-2 py-0.5 rounded text-gray-300">灯光/调色</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed">金鸡电影节手机单元 (最具潜力制作人)</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 5: 柏林电影节游学 -->
+            <div class="min-h-screen flex items-center justify-center px-6 py-20" data-bg="bg-5">
+                <div
+                    class="text-center max-w-4xl backdrop-blur-md bg-black/40 p-8 md:p-12 border border-white/10 rounded-sm">
+                    <span class="block text-white font-mono text-lg md:text-xl mb-4 tracking-widest">EVENT
+                        PLANNING</span>
+                    <h3 class="text-4xl md:text-6xl font-display font-bold text-white mb-6">柏林电影节游学项目</h3>
+                    <p class="text-xl md:text-2xl text-gray-200 font-light mb-2">Berlinale Study Tour</p>
+                    <div class="w-12 h-1 bg-white mx-auto my-6"></div>
+                    <p class="text-lg text-gray-300 font-bold tracking-wide uppercase mb-4">组织策划执行 / 领队</p>
+                    <p class="text-sm text-gray-400 max-w-lg mx-auto">运营小红书、公众号，带队前往柏林电影节进行深度的学习与交流。</p>
+                </div>
+            </div>
+
+            <!-- Item 6: Shortwave 展映 -->
+            <div class="min-h-screen flex items-center justify-center px-6 py-20" data-bg="bg-6">
+                <div
+                    class="text-center max-w-4xl backdrop-blur-md bg-black/40 p-8 md:p-12 border border-white/10 rounded-sm">
+                    <span
+                        class="block text-neonBlue font-mono text-lg md:text-xl mb-4 tracking-widest">EXHIBITION</span>
+                    <h3 class="text-4xl md:text-6xl font-display font-bold text-white mb-6">Shortwave<br>上海青年短片展映</h3>
+                    <p class="text-xl md:text-2xl text-gray-200 font-light mb-2">3rd & 4th Edition</p>
+                    <div class="w-12 h-1 bg-neonBlue mx-auto my-6"></div>
+                    <p class="text-lg md:text-xl text-gray-300 font-bold tracking-wide uppercase">策划执行</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- [SECTION] Portfolio (保持不变) -->
+    <section id="portfolio" class="py-24 bg-[#0e0e0e]">
+        <div class="container mx-auto px-6">
+            <div class="mb-16 text-center fade-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold uppercase mb-4">Frames & Colors</h2>
+                <p class="font-sans text-gray-500 text-sm tracking-widest uppercase">Visual Collection</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+                <!-- Red -->
+                <a href="#" class="portfolio-item group block aspect-video fade-up">
+                    <img src="https://images.unsplash.com/photo-1535136881268-7c852655513e?q=80&w=2070&auto=format&fit=crop"
+                        alt="Red" class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="font-display text-xl uppercase tracking-widest border-b border-neonPink pb-1 text-neonPink">Neon
+                            Red</span>
+                    </div>
+                </a>
+
+                <!-- Portrait (Vertical) -->
+                <a href="#" class="portfolio-item group block aspect-[4/5] row-span-2 fade-up">
+                    <img src="https://images.unsplash.com/photo-1620626372074-8b6b1990c7bf?q=80&w=1887&auto=format&fit=crop"
+                        alt="Portrait" class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="font-display text-xl uppercase tracking-widest border-b border-neonGold pb-1 text-neonGold">Skin
+                            Tones</span>
+                    </div>
+                </a>
+
+                <!-- Blue -->
+                <a href="#" class="portfolio-item group block aspect-video fade-up">
+                    <img src="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=2074&auto=format&fit=crop"
+                        alt="Blue" class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="font-display text-xl uppercase tracking-widest border-b border-neonBlue pb-1 text-neonBlue">Midnight
+                            Blue</span>
+                    </div>
+                </a>
+
+                <!-- Green -->
+                <a href="#" class="portfolio-item group block aspect-video fade-up">
+                    <img src="https://images.unsplash.com/photo-1518895312237-a9e23508077d?q=80&w=2081&auto=format&fit=crop"
+                        alt="Green" class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="font-display text-xl uppercase tracking-widest border-b border-white pb-1 text-white">Matrix
+                            Green</span>
+                    </div>
+                </a>
+
+                <!-- Gold -->
+                <a href="#" class="portfolio-item group block aspect-video fade-up">
+                    <img src="https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?q=80&w=1887&auto=format&fit=crop"
+                        alt="Gold" class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="font-display text-xl uppercase tracking-widest border-b border-neonGold pb-1 text-neonGold">Golden
+                            Hour</span>
+                    </div>
+                </a>
+
+                <!-- B&W -->
+                <a href="#" class="portfolio-item group block aspect-video fade-up">
+                    <img src="https://images.unsplash.com/photo-1616423640778-2cfd1e99dbcb?q=80&w=1887&auto=format&fit=crop"
+                        alt="BW" class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="font-display text-xl uppercase tracking-widest border-b border-gray-500 pb-1 text-gray-300">Monochrome</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- [SECTION] 联系方式 (保持不变) -->
+    <section id="contact" class="py-24 bg-black text-center">
+        <div class="container mx-auto px-6 fade-up">
+            <h2 class="font-display text-4xl font-bold uppercase mb-8">Contact</h2>
+            <p class="text-gray-500 mb-12 max-w-lg mx-auto">
+                随时准备为下一个项目注入独特的色彩。
+            </p>
+
+            <a href="mailto:Yi_Chen_212@163.com"
+                class="inline-block text-2xl md:text-4xl font-display font-bold border-b-2 border-neonBlue pb-2 hover:text-neonBlue transition-colors">
+                Yi_Chen_212@163.com
+            </a>
+
+            <div class="mt-8 text-gray-500 font-mono text-sm">
+                188-1659-6887
+            </div>
+
+            <div class="mt-16 flex justify-center space-x-8 text-sm font-bold uppercase tracking-widest text-gray-600">
+                <a href="#" class="hover:text-white transition-colors">Instagram</a>
+                <a href="#" class="hover:text-white transition-colors">WeChat</a>
+                <a href="#" class="hover:text-white transition-colors">Bilibili</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black py-8 border-t border-gray-900 text-center">
+        <p class="text-gray-800 text-xs font-mono uppercase">
+            &copy; 2025 Chen Yi Visuals. All Rights Reserved.
+        </p>
+    </footer>
+
+    <script>
+        const navToggleBtn = document.getElementById('nav-toggle-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isHidden = mobileMenu.classList.contains('translate-x-full');
+            if (isHidden) {
+                mobileMenu.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileMenu.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+            }
+        }
+
+        if (navToggleBtn) navToggleBtn.addEventListener('click', toggleMenu);
+        if (closeMenuBtn) closeMenuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+        // 1. 常规动画观察器
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+
+                    const progressBars = entry.target.querySelectorAll('.skill-progress');
+                    progressBars.forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-width');
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // 2. [新增] 履历时间轴背景切换逻辑
+        // 我们监听每个文字板块是否进入屏幕中心
+        const timelineOptions = {
+            root: null,
+            rootMargin: '-40% 0px -40% 0px', // 关键：只有当元素进入视口中间20%区域时才触发
+            threshold: 0
+        };
+
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // 获取当前文字板块对应的背景ID
+                    const bgId = entry.target.getAttribute('data-bg');
+
+                    // [新逻辑] 控制遮罩
+                    // 如果当前进入视口的元素有 data-hide-overlay 属性（即 Spacer），则隐藏遮罩
+                    // 否则，显示遮罩
+                    const overlay = document.getElementById('timeline-overlay');
+                    if (entry.target.hasAttribute('data-hide-overlay')) {
+                        overlay.classList.remove('opacity-100');
+                        overlay.classList.add('opacity-0');
+                    } else {
+                        overlay.classList.remove('opacity-0');
+                        overlay.classList.add('opacity-100');
+                    }
+
+                    // 1. 移除所有背景的 active 类
+                    document.querySelectorAll('.timeline-bg').forEach(bg => {
+                        bg.classList.remove('active');
+                    });
+
+                    // 2. 激活当前对应的背景
+                    const targetBg = document.getElementById(bgId);
+                    if (targetBg) {
+                        targetBg.classList.add('active');
+                    }
+                }
+            });
+        }, timelineOptions);
+
+        // 监听所有带有 data-bg 属性的文字容器
+        document.querySelectorAll('[data-bg]').forEach(el => timelineObserver.observe(el));
+
+
+        // 3. 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+
+                if (targetId === '#') {
+                    if (this.classList.contains('logo-text')) {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    }
+                    return;
+                }
+
+                try {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } catch (error) {
+                    console.warn('Skipping invalid selector:', targetId);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
